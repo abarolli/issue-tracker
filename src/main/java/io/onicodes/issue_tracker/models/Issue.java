@@ -9,6 +9,7 @@ public class Issue {
 
     @Id
     private @GeneratedValue Long id;
+    @NotBlank
     private String title;
 
     public Issue(String title) {
