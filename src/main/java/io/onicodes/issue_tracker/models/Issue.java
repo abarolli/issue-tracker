@@ -3,6 +3,7 @@ package io.onicodes.issue_tracker.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Issue {
@@ -11,6 +12,8 @@ public class Issue {
     private @GeneratedValue Long id;
     @NotBlank
     private String title;
+
+    public Issue() {}
 
     public Issue(String title) {
         this.title = title;
