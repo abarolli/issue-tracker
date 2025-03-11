@@ -1,4 +1,4 @@
-package io.onicodes.issue_tracker.daos;
+package io.onicodes.issue_tracker.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
