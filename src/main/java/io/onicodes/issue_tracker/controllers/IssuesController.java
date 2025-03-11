@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.onicodes.issue_tracker.models.Issue;
 import io.onicodes.issue_tracker.daos.IssuesRepository;
+import io.onicodes.issue_tracker.models.issue.Issue;
 
 
 @RestController

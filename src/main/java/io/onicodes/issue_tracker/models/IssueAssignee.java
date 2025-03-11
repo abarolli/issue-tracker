@@ -3,6 +3,7 @@ package io.onicodes.issue_tracker.models;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import io.onicodes.issue_tracker.models.issue.Issue;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
