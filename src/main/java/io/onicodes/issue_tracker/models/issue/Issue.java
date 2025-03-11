@@ -1,5 +1,8 @@
 package io.onicodes.issue_tracker.models.issue;
 
+import java.time.LocalDateTime;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,11 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
-import java.time.LocalDateTime;
-import java.util.Set;
-
-import io.onicodes.issue_tracker.models.IssueAssignee;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Converter;
@@ -21,6 +19,8 @@ import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.AccessLevel;
+
+import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
 
 
 @Converter(autoApply = true)

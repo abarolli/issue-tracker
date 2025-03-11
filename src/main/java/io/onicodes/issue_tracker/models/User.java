@@ -15,6 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
