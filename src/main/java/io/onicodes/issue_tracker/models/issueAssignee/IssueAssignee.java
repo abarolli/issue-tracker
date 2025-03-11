@@ -1,11 +1,8 @@
-package io.onicodes.issue_tracker.models;
+package io.onicodes.issue_tracker.models.issueAssignee;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import io.onicodes.issue_tracker.models.issue.Issue;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -13,23 +10,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
-@Embeddable
-class IssueAssigneeId implements Serializable {
-    private Long issueId;
-    private Long userId;
-}
+import io.onicodes.issue_tracker.models.User;
+import io.onicodes.issue_tracker.models.issue.Issue;
 
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -38,7 +26,7 @@ class IssueAssigneeId implements Serializable {
 public class IssueAssignee {
     @EmbeddedId
     @Setter(AccessLevel.NONE)
-    private IssueAssigneeId issueAssigneeId;
+    private IssueAssigneeId id;
 
     @ManyToOne
     @MapsId("issueId")
@@ -52,4 +40,10 @@ public class IssueAssignee {
 
     @Column(nullable = false)
     private LocalDateTime assignedAt = LocalDateTime.now();
+
+    public IssueAssignee(Issue issue, User user) {
+        this.issue = issue;
+        this.user = user;
+        this.id = new IssueAssigneeId(issue.getId(), user.getId());
+    }
 }
