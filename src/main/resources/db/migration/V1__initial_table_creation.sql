@@ -10,7 +10,9 @@ CREATE TABLE IF NOT EXISTS issue_tracker.issues (
 	title VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
 	status VARCHAR(20) NOT NULL CHECK (status IN ('open', 'in_progress', 'resolved', 'closed')),
-	priority VARCHAR(10) NOT NULL CHECK (priority IN ('low', 'medium', 'high', 'critical'))
+	priority VARCHAR(10) NOT NULL CHECK (priority IN ('low', 'medium', 'high', 'critical')),
+	created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+	updated_at TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS issue_tracker.issue_assignees (
