@@ -91,37 +91,35 @@ class IssuePriorityConverter extends LowerCaseDBDataToUpperCaseAttributeConverte
 @Getter
 @Setter
 @Entity
+@Table(name = "issues")
 public class Issue {
 
     @Id
-    private @GeneratedValue Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
+    private Long id;
+    
     @NotBlank
+    @Column(nullable = false)
     private String title;
 
-    public Issue() {}
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String description;
 
-    public Issue(String title) {
-        this.title = title;
-    }
+    @Convert(converter = IssueStatusConverter.class)
+    @Column(nullable = false)
+    private IssueStatus status;
 
+    @Convert(converter = IssuePriorityConverter.class)
+    @Column(nullable = false)
+    private IssuePriority priority;
 
-    public Long getId() {
-        return this.id;
-    }
-
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
     
-    public String getTitle() {
-        return title;
-    }
+    @Column(nullable = false)
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Issue{id=" + "title=" + this.title + "}";
-    }
+    @OneToMany(mappedBy = "issue")
+    private Set<IssueAssignee> assignees;
 }
