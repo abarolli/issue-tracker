@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.onicodes.issue_tracker.daos.IssuesRepository;
+import io.onicodes.issue_tracker.controllers.exceptions.IssueNotFoundException;
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.repositories.IssuesRepository;
 
@@ -37,10 +37,8 @@ public class IssuesController {
 
     @GetMapping("/{id}")
     public Issue getIssue(@PathVariable Long id) {
-        var optionalIssue = issuesRepository.findById(id);
-        if (optionalIssue.isEmpty())
-            return null; // TODO: handle non existent issue
-        return optionalIssue.get();
+        return issuesRepository.findById(id)
+            .orElseThrow(() -> new IssueNotFoundException(id));
     }
 
     @PostMapping
