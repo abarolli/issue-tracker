@@ -30,6 +30,8 @@ dependencies {
 	implementation 'org.postgresql:postgresql'
 	implementation 'org.flywaydb:flyway-core:11.3.4'
 	implementation 'org.flywaydb:flyway-database-postgresql:10.20.1'
+	implementation 'org.mapstruct:mapstruct'
+	implementation 'org.mapstruct:mapstruct-processor'
 	compileOnly lombok
 	annotationProcessor lombok
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
