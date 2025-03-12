@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.AccessLevel;
 
 import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
 
@@ -83,7 +82,6 @@ public class Issue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
     
     @NotBlank
