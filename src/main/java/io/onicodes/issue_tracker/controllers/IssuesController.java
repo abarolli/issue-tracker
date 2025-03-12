@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.onicodes.issue_tracker.controllers.exceptions.IssueNotFoundException;
+import io.onicodes.issue_tracker.dtos.IssueDTO;
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.repositories.IssuesRepository;
 
@@ -28,16 +29,18 @@ public class IssuesController {
     }
 
     @GetMapping
-    public Page<Issue> getIssues(@RequestParam(defaultValue = "0") int page,
+    public Page<IssueDTO> getIssues(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        return issuesRepository.findAll(pageable);
+        return issuesRepository.findAll(pageable)
+            .map(IssueDTO::new);
     }
 
     @GetMapping("/{id}")
-    public Issue getIssue(@PathVariable Long id) {
+    public IssueDTO getIssue(@PathVariable Long id) {
         return issuesRepository.findById(id)
+            .map(IssueDTO::new)
             .orElseThrow(() -> new IssueNotFoundException(id));
     }
 
