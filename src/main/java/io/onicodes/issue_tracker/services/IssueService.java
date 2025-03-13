@@ -20,14 +20,14 @@ public class IssueService {
         this.issueRepository = issueRepository;
     }
 
-    public IssueDTO getIssue(Long id) {
+    public IssueResponseDTO getIssue(Long id) {
         return issueRepository
                 .findById(id)
                 .map(issue -> IssueMapper.INSTANCE.issueToIssueDTO(issue))
                 .orElseThrow(() -> new IssueNotFoundException(id));
     }
 
-    public Page<IssueDTO> getIssues(int page, int size) {
+    public Page<IssueResponseDTO> getIssues(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return issueRepository
                 .findAll(pageable)

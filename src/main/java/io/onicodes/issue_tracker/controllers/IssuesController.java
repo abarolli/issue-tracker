@@ -24,14 +24,14 @@ public class IssuesController {
     private IssueService issueService;
 
     @GetMapping
-    public Page<IssueDTO> getIssues(@RequestParam(defaultValue = "0") int page,
+    public Page<IssueResponseDTO> getIssues(@RequestParam(defaultValue = "0") int page,
                                     @RequestParam(defaultValue = "10") int size) {
 
         return issueService.getIssues(page, size);
     }
 
     @GetMapping("/{id}")
-    public IssueDTO getIssue(@PathVariable Long id) {
+    public IssueResponseDTO getIssue(@PathVariable Long id) {
         return issueService.getIssue(id);
     }
 
