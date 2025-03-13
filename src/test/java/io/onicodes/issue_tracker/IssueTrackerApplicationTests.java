@@ -8,6 +8,7 @@ class IssueTrackerApplicationTests {
 
 	@Test
 	void contextLoads() {
+		assert(true);
 	}
 
 }

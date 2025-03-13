@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.AccessLevel;
+import lombok.ToString;
 
 import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
 
@@ -75,13 +75,13 @@ class IssuePriorityConverter extends LowerCaseDBDataToUpperCaseAttributeConverte
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "issues")
 public class Issue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
     
     @NotBlank
