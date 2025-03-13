@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.onicodes.issue_tracker.dtos.IssueDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.services.IssueService;
 
 
@@ -35,7 +36,7 @@ public class IssuesController {
     }
 
     @PostMapping
-    public Issue createIssue(@RequestBody Issue issue) {
-        return issuesRepository.save(issue);
+    public IssueResponseDTO createIssue(@RequestBody IssueRequestDTO issueDTO) {
+        return issueService.createIssue(issueDTO);
     }
 }

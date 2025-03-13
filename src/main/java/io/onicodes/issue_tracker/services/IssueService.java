@@ -6,9 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 
 import io.onicodes.issue_tracker.controllers.exceptions.IssueNotFoundException;
-import io.onicodes.issue_tracker.dtos.IssueDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.repositories.IssueRepository;
+
 
 @Service
 public class IssueService {
@@ -30,5 +32,12 @@ public class IssueService {
         return issueRepository
                 .findAll(pageable)
                 .map(issue -> IssueMapper.INSTANCE.issueToIssueDTO(issue));
+    }
+
+    public IssueResponseDTO createIssue(IssueRequestDTO issueDTO) {
+        return IssueMapper
+                .INSTANCE
+                .issueToIssueDTO(issueRepository
+                    .save(IssueMapper.INSTANCE.issueDTOToIssue(issueDTO)));
     }
 }
