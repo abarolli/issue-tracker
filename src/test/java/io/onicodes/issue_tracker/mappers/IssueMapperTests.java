@@ -1,12 +1,13 @@
 package io.onicodes.issue_tracker.mappers;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import lombok.extern.slf4j.Slf4j;
-
-import io.onicodes.issue_tracker.dtos.IssueDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.models.User;
 import io.onicodes.issue_tracker.models.issue.Issue;
@@ -25,17 +26,18 @@ public class IssueMapperTests {
         issue.setDescription("Desc");
         issue.setStatus(IssueStatus.OPEN);
         issue.setPriority(IssuePriority.CRITICAL);
+        issue.setCreatedAt(LocalDateTime.now());
+        issue.setUpdatedAt(LocalDateTime.now());
         return issue;
     }
 
-    public IssueDTO getIssueDTO() {
-        IssueDTO issueDTO = new IssueDTO();
-        issueDTO.setId(Long.valueOf(1));
+    public IssueRequestDTO getIssueRequestDTO() {
+        IssueRequestDTO issueDTO = new IssueRequestDTO();
         issueDTO.setTitle("Title");
         issueDTO.setDescription("Desc");
         issueDTO.setStatus("OPEN");
         issueDTO.setPriority("CRITICAL");
-        return issueDTO;        
+        return issueDTO;
     }
 
 
@@ -56,40 +58,46 @@ public class IssueMapperTests {
     }
 
  
-    private void assertIssueEqualToIssueDTO(IssueDTO issueDTO, Issue issue) {
-        assertIssueDTONonAssigneeAttributesMapToIssue(issueDTO, issue);
-
-        var users = issue.getAssignees()
-                        .stream()
-                        .map(a -> IssueMapper.INSTANCE.userToUserDTO(a.getUser()))
-                        .collect(Collectors.toList());
-        assert(issueDTO.getAssignees().equals(users));
-    }
-
-    private void assertIssueDTONonAssigneeAttributesMapToIssue(IssueDTO issueDTO, Issue issue) {
+    private void assertIssueResponseDTOMapsIssue(IssueResponseDTO issueDTO, Issue issue) {
         assert(issueDTO != null);
         assert(issueDTO.getTitle() == issue.getTitle());
         assert(issueDTO.getStatus() == issue.getStatus().name());
         assert(issueDTO.getPriority() == issue.getPriority().name());
+        assert(issueDTO.getDescription() == issue.getDescription());
+        assert(issueDTO.getCreatedAt() == issue.getCreatedAt());
+        assert(issueDTO.getUpdatedAt() == issue.getUpdatedAt());
+        var users = issue.getAssignees()
+                        .stream()
+                        .map(a -> IssueMapper.INSTANCE.userToUserDTO(a.getUser()))
+                        .collect(Collectors.toList());
+        assert(issueDTO.getAssignees().equals(users));        
+    }
+
+    private void assertIssueRequestDTOMapsIssue(IssueRequestDTO issueDTO, Issue issue) {
+        assert(issueDTO != null);
+        assert(issueDTO.getTitle() == issue.getTitle());
+        assert(issueDTO.getStatus() == issue.getStatus().name());
+        assert(issueDTO.getPriority() == issue.getPriority().name());
+        assert(issueDTO.getDescription() == issue.getDescription());
     }
 
     @Test
-    public void shouldMapIssueToIssueDTO() {
+    public void shouldMapIssueToIssueResponseDTO() {
         
         var issue = getIssue();
         var user = getUser();
         assignUserToIssue(user, issue);
 
-        IssueDTO issueDTO = IssueMapper.INSTANCE.issueToIssueDTO(issue);
-        assertIssueEqualToIssueDTO(issueDTO, issue);
+        IssueResponseDTO issueDTO = IssueMapper.INSTANCE.issueToIssueDTO(issue);
+        assertIssueResponseDTOMapsIssue(issueDTO, issue);
     }
 
 
     @Test
-    public void shouldMapIssueDTOToIssue() {
+    public void shouldMapIssueRequestDTOToIssue() {
 
-        var issueDTO = getIssueDTO();
+        var issueDTO = getIssueRequestDTO();
         Issue issue = IssueMapper.INSTANCE.issueDTOToIssue(issueDTO);
-        assertIssueDTONonAssigneeAttributesMapToIssue(issueDTO, issue);
+        assertIssueRequestDTOMapsIssue(issueDTO, issue);
     }
 }
