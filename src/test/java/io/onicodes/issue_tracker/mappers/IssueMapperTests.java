@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import lombok.extern.slf4j.Slf4j;
-import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueCreateRequestDTO;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.models.User;
@@ -31,8 +31,8 @@ public class IssueMapperTests {
         return issue;
     }
 
-    public IssueRequestDTO getIssueRequestDTO() {
-        IssueRequestDTO issueDTO = new IssueRequestDTO();
+    public IssueCreateRequestDTO getIssueRequestDTO() {
+        IssueCreateRequestDTO issueDTO = new IssueCreateRequestDTO();
         issueDTO.setTitle("Title");
         issueDTO.setDescription("Desc");
         issueDTO.setStatus("OPEN");
@@ -73,7 +73,7 @@ public class IssueMapperTests {
         assert(issueDTO.getAssignees().equals(users));        
     }
 
-    private void assertIssueRequestDTOMapsIssue(IssueRequestDTO issueDTO, Issue issue) {
+    private void assertIssueRequestDTOMapsIssue(IssueCreateRequestDTO issueDTO, Issue issue) {
         assert(issueDTO != null);
         assert(issueDTO.getTitle() == issue.getTitle());
         assert(issueDTO.getStatus() == issue.getStatus().name());

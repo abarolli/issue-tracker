@@ -9,6 +9,6 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class IssueRequestDTO extends IssueBaseDTO {
+public class IssueCreateRequestDTO extends IssueBaseDTO {
 
 }
