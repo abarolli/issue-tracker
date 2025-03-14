@@ -1,5 +1,6 @@
 package io.onicodes.issue_tracker.dtos.issue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -19,6 +20,5 @@ public class IssueBaseDTO {
     private String description;
     private String status;
     private String priority;
-    private List<UserDTO> assignees;
-
+    private List<UserDTO> assignees = new ArrayList<>();
 }
