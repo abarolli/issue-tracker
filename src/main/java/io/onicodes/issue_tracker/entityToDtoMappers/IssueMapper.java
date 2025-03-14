@@ -25,7 +25,7 @@ public interface IssueMapper {
     @Mapping(target = "assignees", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    Issue issueDTOToIssue(IssueCreateRequestDTO issueDTO);
+    Issue issueCreateRequestDTOToIssue(IssueCreateRequestDTO issueDTO);
 
     IssueResponseDTO issueToIssueDTO(Issue issue);
 

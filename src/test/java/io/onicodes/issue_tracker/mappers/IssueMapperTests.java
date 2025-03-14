@@ -97,7 +97,7 @@ public class IssueMapperTests {
     public void shouldMapIssueRequestDTOToIssue() {
 
         var issueDTO = getIssueRequestDTO();
-        Issue issue = IssueMapper.INSTANCE.issueDTOToIssue(issueDTO);
+        Issue issue = IssueMapper.INSTANCE.issueCreateRequestDTOToIssue(issueDTO);
         assertIssueRequestDTOMapsIssue(issueDTO, issue);
     }
 }
