@@ -2,7 +2,6 @@ package io.onicodes.issue_tracker.services;
 
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import jakarta.transaction.Transactional;
@@ -17,10 +16,7 @@ import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.models.issue.Issue;
-import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
-import io.onicodes.issue_tracker.repositories.IssueAssigneeRepository;
 import io.onicodes.issue_tracker.repositories.IssueRepository;
-import io.onicodes.issue_tracker.repositories.UserRepository;
 
 
 @Service
@@ -29,9 +25,7 @@ public class IssueService {
     @Autowired
     private IssueRepository issueRepository;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private IssueAssigneeRepository issueAssigneeRepository;
+    private IssueAssigneeService issueAssigneeService;
 
     public IssueResponseDTO getIssue(Long id) {
         return issueRepository
@@ -57,14 +51,7 @@ public class IssueService {
                                 .map(userDTO -> userDTO.getId())
                                 .collect(Collectors.toList());
         
-        Set<IssueAssignee> assignees = userRepository
-                            .findAllById(userIds)
-                            .stream()
-                            .map(user -> new IssueAssignee(issue, user))
-                            .collect(Collectors.toSet());
-        
-        issueAssigneeRepository.saveAll(assignees);
-        issue.setAssignees(assignees);
+        issueAssigneeService.assign(userIds, issue);
         return IssueMapper.INSTANCE.issueToIssueDTO(issue);
     }
 }
