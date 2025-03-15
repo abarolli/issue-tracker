@@ -5,21 +5,24 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
-import io.onicodes.issue_tracker.repositories.IssueAssigneeRepository;
+import io.onicodes.issue_tracker.repositories.IssueRepository;
 import io.onicodes.issue_tracker.repositories.UserRepository;
 
+@AllArgsConstructor
 @Service
 public class IssueAssigneeService {
     
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private IssueAssigneeRepository issueAssigneeRepository;
+    private IssueRepository issueRepository;
 
     @Transactional
     public Set<IssueAssignee> assign(List<Long> userIds, Issue issue) {
@@ -30,8 +33,8 @@ public class IssueAssigneeService {
                             .map(user -> new IssueAssignee(issue, user))
                             .collect(Collectors.toSet());
         
-        issueAssigneeRepository.saveAll(assignees);
         issue.setAssignees(assignees);
+        issueRepository.save(issue);
         return assignees;
     }
 }
