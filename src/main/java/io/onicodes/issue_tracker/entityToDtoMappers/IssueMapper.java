@@ -8,8 +8,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import io.onicodes.issue_tracker.dtos.IssueDTO;
 import io.onicodes.issue_tracker.dtos.UserDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueCreateRequestDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.models.User;
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
@@ -20,10 +21,13 @@ public interface IssueMapper {
 
     IssueMapper INSTANCE = Mappers.getMapper(IssueMapper.class);
     
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "assignees", ignore = true)
-    Issue issueDTOToIssue(IssueDTO issueDTO);
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    Issue issueCreateRequestDTOToIssue(IssueCreateRequestDTO issueDTO);
 
-    IssueDTO issueToIssueDTO(Issue issue);
+    IssueResponseDTO issueToIssueDTO(Issue issue);
 
     UserDTO userToUserDTO(User user);
 
