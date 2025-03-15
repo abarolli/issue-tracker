@@ -1,6 +1,7 @@
 package io.onicodes.issue_tracker.models.issue;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -11,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Converter;
 import jakarta.validation.constraints.NotBlank;
@@ -105,6 +107,6 @@ public class Issue {
     @Column(nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "issue")
-    private Set<IssueAssignee> assignees;
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<IssueAssignee> assignees = new HashSet<>();
 }
