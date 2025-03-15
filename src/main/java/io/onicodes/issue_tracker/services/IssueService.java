@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.repositories.IssueRepository;
 
 
+@AllArgsConstructor
 @Service
 public class IssueService {
     
