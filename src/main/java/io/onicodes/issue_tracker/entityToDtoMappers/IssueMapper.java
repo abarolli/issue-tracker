@@ -1,9 +1,5 @@
 package io.onicodes.issue_tracker.entityToDtoMappers;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -31,12 +27,8 @@ public interface IssueMapper {
 
     UserDTO userToUserDTO(User user);
 
-    default List<UserDTO> setOfIssueAssigneeToListOfUserDTO(Set<IssueAssignee> assignees) {
-        if (assignees == null) return null;
-        return assignees.stream()
-                .map(assignee -> 
-                    userToUserDTO(assignee.getUser()))
-                .collect(Collectors.toList());
+    default UserDTO issueAssigneeToUserDTO(IssueAssignee assignee) {
+        return userToUserDTO(assignee.getUser());
     }
 
 }
