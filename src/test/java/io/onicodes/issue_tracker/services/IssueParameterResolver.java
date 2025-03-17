@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
 import io.onicodes.issue_tracker.dtos.UserDTO;
-import io.onicodes.issue_tracker.dtos.issue.IssueCreateRequestDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
 
 public class IssueParameterResolver implements ParameterResolver {
 
@@ -15,12 +15,12 @@ public class IssueParameterResolver implements ParameterResolver {
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
         
         var parameterType = parameterContext.getParameter().getType();
-        return parameterType.equals(IssueCreateRequestDTO.class);
+        return parameterType.equals(IssueRequestDTO.class);
     }
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-        var issueCreateRequestDTO = new IssueCreateRequestDTO();
+        var issueCreateRequestDTO = new IssueRequestDTO();
         issueCreateRequestDTO.setTitle("test title");
         issueCreateRequestDTO.setDescription("test desc");
         issueCreateRequestDTO.setStatus("OPEN");

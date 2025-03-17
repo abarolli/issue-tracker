@@ -19,12 +19,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import io.onicodes.issue_tracker.dtos.issue.IssueCreateRequestDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.entityToDtoMappers.UserMapper;
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
+import io.onicodes.issue_tracker.repositories.IssueAssigneeRepository;
 import io.onicodes.issue_tracker.repositories.IssueRepository;
 import io.onicodes.issue_tracker.repositories.UserRepository;
 
@@ -37,23 +38,25 @@ public class IssueServiceTests {
     private IssueRepository issueRepository;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private IssueAssigneeRepository issueAssigneeRepository;
 
     private IssueAssigneeService issueAssigneeService;
     private IssueService issueService;
 
     @BeforeEach
     public void setUpIssueAssigneeService() {
-        issueAssigneeService = Mockito.spy(new IssueAssigneeService(userRepository, issueRepository));
+        issueAssigneeService = Mockito.spy(new IssueAssigneeService(userRepository, issueRepository, issueAssigneeRepository));
         issueService = new IssueService(issueRepository, issueAssigneeService);
     }
 
-    private Issue dummySavedInitialIssueFrom(IssueCreateRequestDTO issueCreateRequestDTO) {
+    private Issue dummySavedInitialIssueFrom(IssueRequestDTO issueCreateRequestDTO) {
         Issue issue = IssueMapper.INSTANCE.issueCreateRequestDTOToIssue(issueCreateRequestDTO);
         issue.setId(Long.valueOf(1));
         return issue;
     }
 
-    private Issue dummySavedIssueWithAssigneesFrom(IssueCreateRequestDTO issueCreateRequestDTO) {
+    private Issue dummySavedIssueWithAssigneesFrom(IssueRequestDTO issueCreateRequestDTO) {
         Issue issue = IssueMapper.INSTANCE.issueCreateRequestDTOToIssue(issueCreateRequestDTO);
         issue.setId(Long.valueOf(1));
         Set<IssueAssignee> assignees = issueCreateRequestDTO.getAssignees()
@@ -66,7 +69,7 @@ public class IssueServiceTests {
         return issue;      
     }
 
-    private void assertValidResponseDTO(IssueResponseDTO responseDTO, IssueCreateRequestDTO requestDTO) {
+    private void assertValidResponseDTO(IssueResponseDTO responseDTO, IssueRequestDTO requestDTO) {
         assert(responseDTO != null);
         assert(responseDTO.getTitle().equals(requestDTO.getTitle()));
         assert(responseDTO.getDescription().equals(requestDTO.getDescription()));
@@ -74,7 +77,7 @@ public class IssueServiceTests {
     }
 
     @Test
-    public void shouldGetIssue(IssueCreateRequestDTO issueCreateRequestDTO) {
+    public void shouldGetIssue(IssueRequestDTO issueCreateRequestDTO) {
         when(issueRepository.findById(anyLong()))
             .thenReturn(Optional.of(dummySavedIssueWithAssigneesFrom(issueCreateRequestDTO)));
         
@@ -83,7 +86,7 @@ public class IssueServiceTests {
     }
 
     @Test
-    public void shouldGetIssues(IssueCreateRequestDTO issueCreateRequestDTO) {
+    public void shouldGetIssues(IssueRequestDTO issueCreateRequestDTO) {
         when(issueRepository.findAll(any(Pageable.class)))
             .thenReturn(new PageImpl<>(List.of(dummySavedIssueWithAssigneesFrom(issueCreateRequestDTO))));
 
@@ -94,7 +97,7 @@ public class IssueServiceTests {
     }
     
     @Test
-    public void shouldCreateIssue(IssueCreateRequestDTO issueCreateRequestDTO) {
+    public void shouldCreateIssue(IssueRequestDTO issueCreateRequestDTO) {
 
         when(userRepository.findAllById(anyIterable()))
             .thenReturn(UserMapper.INSTANCE

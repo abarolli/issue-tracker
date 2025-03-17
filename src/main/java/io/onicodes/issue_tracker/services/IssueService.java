@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import io.onicodes.issue_tracker.controllers.exceptions.IssueNotFoundException;
-import io.onicodes.issue_tracker.dtos.issue.IssueCreateRequestDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.models.issue.Issue;
@@ -45,7 +45,7 @@ public class IssueService {
     }
 
     @Transactional
-    public IssueResponseDTO createIssue(IssueCreateRequestDTO issueDTO) {
+    public IssueResponseDTO createIssue(IssueRequestDTO issueDTO) {
         Issue issue = issueRepository
                         .save(IssueMapper.INSTANCE.issueCreateRequestDTOToIssue(issueDTO));
         List<Long> userIds = issueDTO
