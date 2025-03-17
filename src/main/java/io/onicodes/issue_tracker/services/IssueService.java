@@ -1,6 +1,7 @@
 package io.onicodes.issue_tracker.services;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +56,25 @@ public class IssueService {
                                 .collect(Collectors.toList());
         
         issueAssigneeService.assign(userIds, issue);
+        return IssueMapper.INSTANCE.issueToIssueDTO(issue);
+    }
+    
+    @Transactional
+    public IssueResponseDTO updateIssue(Long id, IssueRequestDTO issueDTO) {
+        Issue issue = issueRepository.findById(id)
+                                    .orElseThrow(() -> new IssueNotFoundException(id));
+        
+        IssueMapper.INSTANCE.updateFromDTO(issueDTO, issue);
+
+        List<Long> userIds = issueDTO
+                                .getAssignees()
+                                .stream()
+                                .map(userDTO -> userDTO.getId())
+                                .collect(Collectors.toList());
+        
+        issueAssigneeService.updateAssigneesForIssue(userIds, issue);
+        issue.setUpdatedAt(LocalDateTime.now());
+        issueRepository.save(issue);
         return IssueMapper.INSTANCE.issueToIssueDTO(issue);
     }
 }
