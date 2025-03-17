@@ -17,6 +17,7 @@ import jakarta.persistence.Convert;
 import jakarta.persistence.Converter;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -75,6 +76,7 @@ class IssuePriorityConverter extends LowerCaseDBDataToUpperCaseAttributeConverte
 
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Getter
 @Setter
 @ToString
