@@ -7,10 +7,10 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
-import io.onicodes.issue_tracker.dtos.UserDTO;
+import io.onicodes.issue_tracker.dtos.AppUserDto;
 import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
-import io.onicodes.issue_tracker.models.User;
+import io.onicodes.issue_tracker.models.AppUser;
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
 
@@ -35,10 +35,10 @@ public interface IssueMapper {
 
     IssueResponseDTO issueToIssueDTO(Issue issue);
 
-    UserDTO userToUserDTO(User user);
+    AppUserDto userToUserDto(AppUser user);
 
-    default UserDTO issueAssigneeToUserDTO(IssueAssignee assignee) {
-        return userToUserDTO(assignee.getUser());
+    default AppUserDto issueAssigneeToUserDTO(IssueAssignee assignee) {
+        return userToUserDto(assignee.getUser());
     }
 
 }

@@ -21,16 +21,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import io.onicodes.issue_tracker.dtos.UserDTO;
+import io.onicodes.issue_tracker.dtos.AppUserDto;
 import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.entityToDtoMappers.UserMapper;
 import io.onicodes.issue_tracker.models.issue.Issue;
-import io.onicodes.issue_tracker.models.User;
+import io.onicodes.issue_tracker.models.AppUser;
 import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
 import io.onicodes.issue_tracker.repositories.IssueRepository;
-import io.onicodes.issue_tracker.repositories.UserRepository;
+import io.onicodes.issue_tracker.repositories.AppUserRepository;
 
 
 @ExtendWith(IssueParameterResolver.class)
@@ -40,7 +40,7 @@ public class IssueServiceTests {
     @Mock
     private IssueRepository issueRepository;
     @Mock
-    private UserRepository userRepository;
+    private AppUserRepository userRepository;
 
     private IssueAssigneeService issueAssigneeService;
     private IssueService issueService;
@@ -117,15 +117,15 @@ public class IssueServiceTests {
         Issue existingIssue = dummySavedIssueWithAssigneesFrom(issueRequestDTO);
         when(issueRepository.findById(1L)).thenReturn(Optional.of(existingIssue));
 
-        UserDTO newAssignee = new UserDTO();
+        AppUserDto newAssignee = new AppUserDto();
         newAssignee.setId(2L);
         newAssignee.setEmail("newemail@gmail.com");
 
-        List<UserDTO> updatedAssignees = new ArrayList<>(issueRequestDTO.getAssignees());
+        List<AppUserDto> updatedAssignees = new ArrayList<>(issueRequestDTO.getAssignees());
         updatedAssignees.add(newAssignee);
         issueRequestDTO.setAssignees(updatedAssignees);
         
-        List<User> allUsers = UserMapper.INSTANCE.userDTOListToUserList(updatedAssignees);
+        List<AppUser> allUsers = UserMapper.INSTANCE.userDTOListToUserList(updatedAssignees);
         when(userRepository.findAllById(anyIterable())).thenReturn(allUsers);
 
         when(issueRepository.save(any())).thenReturn(existingIssue);

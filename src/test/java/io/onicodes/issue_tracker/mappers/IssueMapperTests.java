@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
-import io.onicodes.issue_tracker.models.User;
+import io.onicodes.issue_tracker.models.AppUser;
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.models.issue.IssuePriority;
 import io.onicodes.issue_tracker.models.issue.IssueStatus;
@@ -50,8 +50,8 @@ public class IssueMapperTests {
     }
 
 
-    private User getUser() {
-        User user = new User();
+    private AppUser getUser() {
+        AppUser user = new AppUser();
         user.setId(Long.valueOf(1));
         user.setName("Oni");
         user.setEmail("myemail@gmail.com");
@@ -59,7 +59,7 @@ public class IssueMapperTests {
     }
 
     
-    private void assignUserToIssue(User user, Issue issue) {
+    private void assignUserToIssue(AppUser user, Issue issue) {
         IssueAssignee assignee = new IssueAssignee(issue, user);
         Set<IssueAssignee> assignees = Set.of(assignee);
         issue.setAssignees(assignees);

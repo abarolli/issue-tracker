@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-public class UserDTO {
+public class AppUserDto {
     private Long id;
     private String name;
     private String email;

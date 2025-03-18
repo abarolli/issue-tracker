@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
-import io.onicodes.issue_tracker.dtos.UserDTO;
+import io.onicodes.issue_tracker.dtos.AppUserDto;
 import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
 
 public class IssueParameterResolver implements ParameterResolver {
@@ -26,7 +26,7 @@ public class IssueParameterResolver implements ParameterResolver {
         issueRequestDTO.setStatus("OPEN");
         issueRequestDTO.setPriority("CRITICAL");
 
-        var user = new UserDTO();
+        var user = new AppUserDto();
         user.setId(Long.valueOf(1));
         user.setName("Oni");
         user.setEmail("myemail@gmail.com");

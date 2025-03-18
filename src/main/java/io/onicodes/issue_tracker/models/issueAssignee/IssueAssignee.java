@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import io.onicodes.issue_tracker.models.User;
+import io.onicodes.issue_tracker.models.AppUser;
 import io.onicodes.issue_tracker.models.issue.Issue;
 
 
@@ -43,12 +43,12 @@ public class IssueAssignee {
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id")
-    private User user;
+    private AppUser user;
 
     @Column(nullable = false)
     private LocalDateTime assignedAt = LocalDateTime.now();
 
-    public IssueAssignee(Issue issue, User user) {
+    public IssueAssignee(Issue issue, AppUser user) {
         this.issue = issue;
         this.user = user;
         this.id = new IssueAssigneeId(issue.getId(), user.getId());
