@@ -22,10 +22,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.onicodes.issue_tracker.dtos.AppUserDto;
-import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
-import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDto;
+import io.onicodes.issue_tracker.dtos.issue.IssueResponseDto;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
-import io.onicodes.issue_tracker.entityToDtoMappers.UserMapper;
+import io.onicodes.issue_tracker.entityToDtoMappers.AppUserMapper;
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.models.AppUser;
 import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
@@ -51,86 +51,86 @@ public class IssueServiceTests {
         issueService = new IssueService(issueRepository, issueAssigneeService);
     }
 
-    private Issue dummySavedInitialIssueFrom(IssueRequestDTO issueRequestDTO) {
-        Issue issue = IssueMapper.INSTANCE.issueRequestDTOToIssue(issueRequestDTO);
+    private Issue dummySavedInitialIssueFrom(IssueRequestDto issueRequestDto) {
+        Issue issue = IssueMapper.INSTANCE.issueRequestDtoToIssue(issueRequestDto);
         issue.setId(Long.valueOf(1));
         return issue;
     }
 
-    private Issue dummySavedIssueWithAssigneesFrom(IssueRequestDTO issueRequestDTO) {
-        Issue issue = IssueMapper.INSTANCE.issueRequestDTOToIssue(issueRequestDTO);
+    private Issue dummySavedIssueWithAssigneesFrom(IssueRequestDto issueRequestDto) {
+        Issue issue = IssueMapper.INSTANCE.issueRequestDtoToIssue(issueRequestDto);
         issue.setId(Long.valueOf(1));
-        Set<IssueAssignee> assignees = issueRequestDTO.getAssignees()
+        Set<IssueAssignee> assignees = issueRequestDto.getAssignees()
                             .stream()
-                            .map(userDTO ->
-                                new IssueAssignee(issue, UserMapper.INSTANCE.userDTOToUser(userDTO)))
+                            .map(userDto ->
+                                new IssueAssignee(issue, AppUserMapper.INSTANCE.appUserDtoToAppUser(userDto)))
                             .collect(Collectors.toSet());
         
         issue.setAssignees(assignees);
         return issue;      
     }
 
-    private void assertValidResponseDTO(IssueResponseDTO responseDTO, IssueRequestDTO requestDTO) {
-        assert(responseDTO != null);
-        assert(responseDTO.getTitle().equals(requestDTO.getTitle()));
-        assert(responseDTO.getDescription().equals(requestDTO.getDescription()));
-        assert(new HashSet<>(responseDTO.getAssignees())
-            .equals(new HashSet<>(requestDTO.getAssignees())));
+    private void assertValidResponseDto(IssueResponseDto responseDto, IssueRequestDto requestDto) {
+        assert(responseDto != null);
+        assert(responseDto.getTitle().equals(requestDto.getTitle()));
+        assert(responseDto.getDescription().equals(requestDto.getDescription()));
+        assert(new HashSet<>(responseDto.getAssignees())
+            .equals(new HashSet<>(requestDto.getAssignees())));
     }
 
     @Test
-    public void shouldGetIssue(IssueRequestDTO issueRequestDTO) {
+    public void shouldGetIssue(IssueRequestDto issueRequestDto) {
         when(issueRepository.findById(anyLong()))
-            .thenReturn(Optional.of(dummySavedIssueWithAssigneesFrom(issueRequestDTO)));
+            .thenReturn(Optional.of(dummySavedIssueWithAssigneesFrom(issueRequestDto)));
         
-        var issueResponseDTO = issueService.getIssue(Long.valueOf(1));
-        assertValidResponseDTO(issueResponseDTO, issueRequestDTO);
+        var issueResponseDto = issueService.getIssue(Long.valueOf(1));
+        assertValidResponseDto(issueResponseDto, issueRequestDto);
     }
 
     @Test
-    public void shouldGetIssues(IssueRequestDTO issueRequestDTO) {
+    public void shouldGetIssues(IssueRequestDto issueRequestDto) {
         when(issueRepository.findAll(any(Pageable.class)))
-            .thenReturn(new PageImpl<>(List.of(dummySavedIssueWithAssigneesFrom(issueRequestDTO))));
+            .thenReturn(new PageImpl<>(List.of(dummySavedIssueWithAssigneesFrom(issueRequestDto))));
 
-        List<IssueResponseDTO> issues = issueService.getIssues(0, 10).getContent();
-        for (var issueResponseDTO : issues) {
-            assertValidResponseDTO(issueResponseDTO, issueRequestDTO);
+        List<IssueResponseDto> issues = issueService.getIssues(0, 10).getContent();
+        for (var issueResponseDto : issues) {
+            assertValidResponseDto(issueResponseDto, issueRequestDto);
         }
     }
     
     @Test
-    public void shouldCreateIssue(IssueRequestDTO issueRequestDTO) {
+    public void shouldCreateIssue(IssueRequestDto issueRequestDto) {
 
         when(userRepository.findAllById(anyIterable()))
-            .thenReturn(UserMapper.INSTANCE
-                .userDTOListToUserList(issueRequestDTO.getAssignees()));
+            .thenReturn(AppUserMapper.INSTANCE
+                .appUserDtoListToAppUserList(issueRequestDto.getAssignees()));
 
         when(issueRepository.save(any()))
-            .thenReturn(dummySavedInitialIssueFrom(issueRequestDTO));
+            .thenReturn(dummySavedInitialIssueFrom(issueRequestDto));
         
-        var issueResponseDTO = issueService.createIssue(issueRequestDTO);
-        assertValidResponseDTO(issueResponseDTO, issueRequestDTO);
+        var issueResponseDto = issueService.createIssue(issueRequestDto);
+        assertValidResponseDto(issueResponseDto, issueRequestDto);
     }
 
     @Test
-    public void shouldUpdateIssue(IssueRequestDTO issueRequestDTO) {
-        Issue existingIssue = dummySavedIssueWithAssigneesFrom(issueRequestDTO);
+    public void shouldUpdateIssue(IssueRequestDto issueRequestDto) {
+        Issue existingIssue = dummySavedIssueWithAssigneesFrom(issueRequestDto);
         when(issueRepository.findById(1L)).thenReturn(Optional.of(existingIssue));
 
         AppUserDto newAssignee = new AppUserDto();
         newAssignee.setId(2L);
         newAssignee.setEmail("newemail@gmail.com");
 
-        List<AppUserDto> updatedAssignees = new ArrayList<>(issueRequestDTO.getAssignees());
+        List<AppUserDto> updatedAssignees = new ArrayList<>(issueRequestDto.getAssignees());
         updatedAssignees.add(newAssignee);
-        issueRequestDTO.setAssignees(updatedAssignees);
+        issueRequestDto.setAssignees(updatedAssignees);
         
-        List<AppUser> allUsers = UserMapper.INSTANCE.userDTOListToUserList(updatedAssignees);
+        List<AppUser> allUsers = AppUserMapper.INSTANCE.appUserDtoListToAppUserList(updatedAssignees);
         when(userRepository.findAllById(anyIterable())).thenReturn(allUsers);
 
         when(issueRepository.save(any())).thenReturn(existingIssue);
 
-        var issueResponseDTO = issueService.updateIssue(1L, issueRequestDTO);
-        assertValidResponseDTO(issueResponseDTO, issueRequestDTO);
+        var issueResponseDto = issueService.updateIssue(1L, issueRequestDto);
+        assertValidResponseDto(issueResponseDto, issueRequestDto);
     }
 }

@@ -14,7 +14,7 @@ public interface AppUserMapper {
     AppUserMapper INSTANCE = Mappers.getMapper(AppUserMapper.class);
 
     @Mapping(target = "issues", ignore = true)
-    AppUser appUserDtoToAppUser(AppUserDto userDTO);
+    AppUser appUserDtoToAppUser(AppUserDto userDto);
 
-    List<AppUser> appUserDtoListToAppUserList(List<AppUserDto> userDTOs);
+    List<AppUser> appUserDtoListToAppUserList(List<AppUserDto> userDtos);
 }

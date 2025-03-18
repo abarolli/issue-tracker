@@ -18,7 +18,7 @@ import jakarta.validation.constraints.NotNull;
 @Setter
 @ToString
 @NoArgsConstructor
-public class IssueBaseDTO {
+public class IssueBaseDto {
     @NotNull(groups = CreateGroup.class)
     @NotBlank(groups = {CreateGroup.class, PatchGroup.class})
     private String title;

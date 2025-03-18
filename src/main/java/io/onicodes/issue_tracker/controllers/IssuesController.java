@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.onicodes.issue_tracker.dtos.CreateGroup;
 import io.onicodes.issue_tracker.dtos.PatchGroup;
-import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
-import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDto;
+import io.onicodes.issue_tracker.dtos.issue.IssueResponseDto;
 import io.onicodes.issue_tracker.services.IssueService;
 
 
@@ -29,30 +29,30 @@ public class IssuesController {
     private IssueService issueService;
 
     @GetMapping
-    public Page<IssueResponseDTO> getIssues(@RequestParam(defaultValue = "0") int page,
+    public Page<IssueResponseDto> getIssues(@RequestParam(defaultValue = "0") int page,
                                     @RequestParam(defaultValue = "10") int size) {
 
         return issueService.getIssues(page, size);
     }
 
     @GetMapping("/{id}")
-    public IssueResponseDTO getIssue(@PathVariable Long id) {
+    public IssueResponseDto getIssue(@PathVariable Long id) {
         return issueService.getIssue(id);
     }
 
     @PostMapping
-    public IssueResponseDTO createIssue(
-        @Validated(CreateGroup.class) @RequestBody IssueRequestDTO issueDTO) {
+    public IssueResponseDto createIssue(
+        @Validated(CreateGroup.class) @RequestBody IssueRequestDto issueDto) {
         
-        return issueService.createIssue(issueDTO);
+        return issueService.createIssue(issueDto);
     }
 
     @PatchMapping("/{id}")
-    public IssueResponseDTO updateIssue(
+    public IssueResponseDto updateIssue(
         @PathVariable Long id,
-        @RequestBody IssueRequestDTO issueRequestDTO) { // TODO: implement validation for update requests
+        @RequestBody IssueRequestDto issueRequestDto) { // TODO: implement validation for update requests
 
-        return issueService.updateIssue(id, issueRequestDTO);
+        return issueService.updateIssue(id, issueRequestDto);
     }
 
     @DeleteMapping("/{id}")

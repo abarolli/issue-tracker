@@ -15,8 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import io.onicodes.issue_tracker.controllers.exceptions.IssueNotFoundException;
-import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
-import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDto;
+import io.onicodes.issue_tracker.dtos.issue.IssueResponseDto;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.repositories.IssueRepository;
@@ -31,51 +31,51 @@ public class IssueService {
     @Autowired
     private IssueAssigneeService issueAssigneeService;
 
-    public IssueResponseDTO getIssue(Long id) {
+    public IssueResponseDto getIssue(Long id) {
         return issueRepository
                 .findById(id)
-                .map(issue -> IssueMapper.INSTANCE.issueToIssueDTO(issue))
+                .map(issue -> IssueMapper.INSTANCE.issueToIssueDto(issue))
                 .orElseThrow(() -> new IssueNotFoundException(id));
     }
 
-    public Page<IssueResponseDTO> getIssues(int page, int size) {
+    public Page<IssueResponseDto> getIssues(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return issueRepository
                 .findAll(pageable)
-                .map(issue -> IssueMapper.INSTANCE.issueToIssueDTO(issue));
+                .map(issue -> IssueMapper.INSTANCE.issueToIssueDto(issue));
     }
 
     @Transactional
-    public IssueResponseDTO createIssue(IssueRequestDTO issueDTO) {
+    public IssueResponseDto createIssue(IssueRequestDto issueDto) {
         Issue issue = issueRepository
-                        .save(IssueMapper.INSTANCE.issueRequestDTOToIssue(issueDTO));
-        List<Long> userIds = issueDTO
+                        .save(IssueMapper.INSTANCE.issueRequestDtoToIssue(issueDto));
+        List<Long> userIds = issueDto
                                 .getAssignees()
                                 .stream()
-                                .map(userDTO -> userDTO.getId())
+                                .map(userDto -> userDto.getId())
                                 .collect(Collectors.toList());
         
         issueAssigneeService.assign(userIds, issue);
-        return IssueMapper.INSTANCE.issueToIssueDTO(issue);
+        return IssueMapper.INSTANCE.issueToIssueDto(issue);
     }
     
     @Transactional
-    public IssueResponseDTO updateIssue(Long id, IssueRequestDTO issueDTO) {
+    public IssueResponseDto updateIssue(Long id, IssueRequestDto issueDto) {
         Issue issue = issueRepository.findById(id)
                                     .orElseThrow(() -> new IssueNotFoundException(id));
         
-        IssueMapper.INSTANCE.updateFromDTO(issueDTO, issue);
+        IssueMapper.INSTANCE.updateFromDto(issueDto, issue);
 
-        List<Long> userIds = issueDTO
+        List<Long> userIds = issueDto
                                 .getAssignees()
                                 .stream()
-                                .map(userDTO -> userDTO.getId())
+                                .map(userDto -> userDto.getId())
                                 .collect(Collectors.toList());
         
         issueAssigneeService.updateAssigneesForIssue(userIds, issue);
         issue.setUpdatedAt(LocalDateTime.now());
         issueRepository.save(issue);
-        return IssueMapper.INSTANCE.issueToIssueDTO(issue);
+        return IssueMapper.INSTANCE.issueToIssueDto(issue);
     }
 
     @Transactional

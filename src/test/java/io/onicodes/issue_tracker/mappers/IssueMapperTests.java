@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import lombok.extern.slf4j.Slf4j;
-import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
-import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDto;
+import io.onicodes.issue_tracker.dtos.issue.IssueResponseDto;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.models.AppUser;
 import io.onicodes.issue_tracker.models.issue.Issue;
@@ -31,22 +31,22 @@ public class IssueMapperTests {
         return issue;
     }
 
-    public IssueRequestDTO getIssueRequestDTO() {
-        IssueRequestDTO issueDTO = new IssueRequestDTO();
-        issueDTO.setTitle("Title");
-        issueDTO.setDescription("Desc");
-        issueDTO.setStatus("OPEN");
-        issueDTO.setPriority("CRITICAL");
-        return issueDTO;
+    public IssueRequestDto getIssueRequestDto() {
+        IssueRequestDto issueDto = new IssueRequestDto();
+        issueDto.setTitle("Title");
+        issueDto.setDescription("Desc");
+        issueDto.setStatus("OPEN");
+        issueDto.setPriority("CRITICAL");
+        return issueDto;
     }
 
-    public IssueRequestDTO getIssueUpdateRequestDTO() {
-        IssueRequestDTO issueDTO = new IssueRequestDTO();
-        issueDTO.setTitle("New Title");
-        issueDTO.setDescription("New Desc");
-        issueDTO.setStatus("CLOSED");
-        issueDTO.setPriority("HIGH");
-        return issueDTO;
+    public IssueRequestDto getIssueUpdateRequestDto() {
+        IssueRequestDto issueDto = new IssueRequestDto();
+        issueDto.setTitle("New Title");
+        issueDto.setDescription("New Desc");
+        issueDto.setStatus("CLOSED");
+        issueDto.setPriority("HIGH");
+        return issueDto;
     }
 
 
@@ -67,55 +67,55 @@ public class IssueMapperTests {
     }
 
  
-    private void assertIssueResponseDTOMapsIssue(IssueResponseDTO issueDTO, Issue issue) {
-        assert(issueDTO != null);
-        assert(issueDTO.getTitle() == issue.getTitle());
-        assert(issueDTO.getStatus() == issue.getStatus().name());
-        assert(issueDTO.getPriority() == issue.getPriority().name());
-        assert(issueDTO.getDescription() == issue.getDescription());
-        assert(issueDTO.getCreatedAt() == issue.getCreatedAt());
-        assert(issueDTO.getUpdatedAt() == issue.getUpdatedAt());
+    private void assertIssueResponseDtoMapsIssue(IssueResponseDto issueDto, Issue issue) {
+        assert(issueDto != null);
+        assert(issueDto.getTitle() == issue.getTitle());
+        assert(issueDto.getStatus() == issue.getStatus().name());
+        assert(issueDto.getPriority() == issue.getPriority().name());
+        assert(issueDto.getDescription() == issue.getDescription());
+        assert(issueDto.getCreatedAt() == issue.getCreatedAt());
+        assert(issueDto.getUpdatedAt() == issue.getUpdatedAt());
         var users = issue.getAssignees()
                         .stream()
-                        .map(a -> IssueMapper.INSTANCE.userToUserDTO(a.getUser()))
+                        .map(a -> IssueMapper.INSTANCE.userToUserDto(a.getUser()))
                         .collect(Collectors.toList());
-        assert(issueDTO.getAssignees().equals(users));        
+        assert(issueDto.getAssignees().equals(users));        
     }
 
-    private void assertIssueRequestDTOMapsIssue(IssueRequestDTO issueDTO, Issue issue) {
-        assert(issueDTO != null);
-        assert(issueDTO.getTitle() == issue.getTitle());
-        assert(issueDTO.getStatus() == issue.getStatus().name());
-        assert(issueDTO.getPriority() == issue.getPriority().name());
-        assert(issueDTO.getDescription() == issue.getDescription());
+    private void assertIssueRequestDtoMapsIssue(IssueRequestDto issueDto, Issue issue) {
+        assert(issueDto != null);
+        assert(issueDto.getTitle() == issue.getTitle());
+        assert(issueDto.getStatus() == issue.getStatus().name());
+        assert(issueDto.getPriority() == issue.getPriority().name());
+        assert(issueDto.getDescription() == issue.getDescription());
     }
 
     @Test
-    public void shouldMapIssueToIssueResponseDTO() {
+    public void shouldMapIssueToIssueResponseDto() {
         
         var issue = getIssue();
         var user = getUser();
         assignUserToIssue(user, issue);
 
-        IssueResponseDTO issueDTO = IssueMapper.INSTANCE.issueToIssueDTO(issue);
-        assertIssueResponseDTOMapsIssue(issueDTO, issue);
+        IssueResponseDto issueDto = IssueMapper.INSTANCE.issueToIssueDto(issue);
+        assertIssueResponseDtoMapsIssue(issueDto, issue);
     }
 
 
     @Test
-    public void shouldMapIssueRequestDTOToIssue() {
+    public void shouldMapIssueRequestDtoToIssue() {
 
-        var issueDTO = getIssueRequestDTO();
-        Issue issue = IssueMapper.INSTANCE.issueRequestDTOToIssue(issueDTO);
-        assertIssueRequestDTOMapsIssue(issueDTO, issue);
+        var issueDto = getIssueRequestDto();
+        Issue issue = IssueMapper.INSTANCE.issueRequestDtoToIssue(issueDto);
+        assertIssueRequestDtoMapsIssue(issueDto, issue);
     }
 
     @Test
-    public void shouldUpdateIssueWithDTO() {
+    public void shouldUpdateIssueWithDto() {
 
-        var issueDTO = getIssueUpdateRequestDTO();
+        var issueDto = getIssueUpdateRequestDto();
         var issue = getIssue();
-        IssueMapper.INSTANCE.updateFromDTO(issueDTO, issue);
-        assertIssueRequestDTOMapsIssue(issueDTO, issue);
+        IssueMapper.INSTANCE.updateFromDto(issueDto, issue);
+        assertIssueRequestDtoMapsIssue(issueDto, issue);
     }
 }

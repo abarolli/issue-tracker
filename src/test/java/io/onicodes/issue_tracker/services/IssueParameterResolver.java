@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
 import io.onicodes.issue_tracker.dtos.AppUserDto;
-import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDto;
 
 public class IssueParameterResolver implements ParameterResolver {
 
@@ -15,24 +15,24 @@ public class IssueParameterResolver implements ParameterResolver {
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
         
         var parameterType = parameterContext.getParameter().getType();
-        return parameterType.equals(IssueRequestDTO.class);
+        return parameterType.equals(IssueRequestDto.class);
     }
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-        var issueRequestDTO = new IssueRequestDTO();
-        issueRequestDTO.setTitle("test title");
-        issueRequestDTO.setDescription("test desc");
-        issueRequestDTO.setStatus("OPEN");
-        issueRequestDTO.setPriority("CRITICAL");
+        var issueRequestDto = new IssueRequestDto();
+        issueRequestDto.setTitle("test title");
+        issueRequestDto.setDescription("test desc");
+        issueRequestDto.setStatus("OPEN");
+        issueRequestDto.setPriority("CRITICAL");
 
         var user = new AppUserDto();
         user.setId(Long.valueOf(1));
         user.setName("Oni");
         user.setEmail("myemail@gmail.com");
         
-        issueRequestDTO.setAssignees(List.of(user));
-        return issueRequestDTO;
+        issueRequestDto.setAssignees(List.of(user));
+        return issueRequestDto;
     }
     
 }
