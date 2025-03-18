@@ -40,6 +40,15 @@ public class IssueMapperTests {
         return issueDTO;
     }
 
+    public IssueRequestDTO getIssueUpdateRequestDTO() {
+        IssueRequestDTO issueDTO = new IssueRequestDTO();
+        issueDTO.setTitle("New Title");
+        issueDTO.setDescription("New Desc");
+        issueDTO.setStatus("CLOSED");
+        issueDTO.setPriority("HIGH");
+        return issueDTO;
+    }
+
 
     private User getUser() {
         User user = new User();
@@ -97,7 +106,16 @@ public class IssueMapperTests {
     public void shouldMapIssueRequestDTOToIssue() {
 
         var issueDTO = getIssueRequestDTO();
-        Issue issue = IssueMapper.INSTANCE.issueCreateRequestDTOToIssue(issueDTO);
+        Issue issue = IssueMapper.INSTANCE.issueRequestDTOToIssue(issueDTO);
+        assertIssueRequestDTOMapsIssue(issueDTO, issue);
+    }
+
+    @Test
+    public void shouldUpdateIssueWithDTO() {
+
+        var issueDTO = getIssueUpdateRequestDTO();
+        var issue = getIssue();
+        IssueMapper.INSTANCE.updateFromDTO(issueDTO, issue);
         assertIssueRequestDTOMapsIssue(issueDTO, issue);
     }
 }
