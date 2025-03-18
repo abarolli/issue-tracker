@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import lombok.extern.slf4j.Slf4j;
-import io.onicodes.issue_tracker.dtos.issue.IssueCreateRequestDTO;
+import io.onicodes.issue_tracker.dtos.issue.IssueRequestDTO;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDTO;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.models.User;
@@ -31,12 +31,21 @@ public class IssueMapperTests {
         return issue;
     }
 
-    public IssueCreateRequestDTO getIssueRequestDTO() {
-        IssueCreateRequestDTO issueDTO = new IssueCreateRequestDTO();
+    public IssueRequestDTO getIssueRequestDTO() {
+        IssueRequestDTO issueDTO = new IssueRequestDTO();
         issueDTO.setTitle("Title");
         issueDTO.setDescription("Desc");
         issueDTO.setStatus("OPEN");
         issueDTO.setPriority("CRITICAL");
+        return issueDTO;
+    }
+
+    public IssueRequestDTO getIssueUpdateRequestDTO() {
+        IssueRequestDTO issueDTO = new IssueRequestDTO();
+        issueDTO.setTitle("New Title");
+        issueDTO.setDescription("New Desc");
+        issueDTO.setStatus("CLOSED");
+        issueDTO.setPriority("HIGH");
         return issueDTO;
     }
 
@@ -73,7 +82,7 @@ public class IssueMapperTests {
         assert(issueDTO.getAssignees().equals(users));        
     }
 
-    private void assertIssueRequestDTOMapsIssue(IssueCreateRequestDTO issueDTO, Issue issue) {
+    private void assertIssueRequestDTOMapsIssue(IssueRequestDTO issueDTO, Issue issue) {
         assert(issueDTO != null);
         assert(issueDTO.getTitle() == issue.getTitle());
         assert(issueDTO.getStatus() == issue.getStatus().name());
@@ -97,7 +106,16 @@ public class IssueMapperTests {
     public void shouldMapIssueRequestDTOToIssue() {
 
         var issueDTO = getIssueRequestDTO();
-        Issue issue = IssueMapper.INSTANCE.issueCreateRequestDTOToIssue(issueDTO);
+        Issue issue = IssueMapper.INSTANCE.issueRequestDTOToIssue(issueDTO);
+        assertIssueRequestDTOMapsIssue(issueDTO, issue);
+    }
+
+    @Test
+    public void shouldUpdateIssueWithDTO() {
+
+        var issueDTO = getIssueUpdateRequestDTO();
+        var issue = getIssue();
+        IssueMapper.INSTANCE.updateFromDTO(issueDTO, issue);
         assertIssueRequestDTOMapsIssue(issueDTO, issue);
     }
 }

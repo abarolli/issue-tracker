@@ -10,17 +10,20 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import lombok.ToString;
 import io.onicodes.issue_tracker.models.User;
 import io.onicodes.issue_tracker.models.issue.Issue;
 
 
 @NoArgsConstructor
+@EqualsAndHashCode
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name = "issue_assignees")
 public class IssueAssignee {
@@ -28,11 +31,15 @@ public class IssueAssignee {
     @Setter(AccessLevel.NONE)
     private IssueAssigneeId id;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne
     @MapsId("issueId")
     @JoinColumn(name = "issue_id")
     private Issue issue;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id")
