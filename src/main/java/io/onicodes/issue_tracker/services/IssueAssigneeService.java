@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
-import io.onicodes.issue_tracker.models.issueAssignee.IssueAssigneeId;
-import io.onicodes.issue_tracker.repositories.IssueAssigneeRepository;
 import io.onicodes.issue_tracker.repositories.IssueRepository;
 import io.onicodes.issue_tracker.repositories.UserRepository;
 
@@ -27,8 +25,6 @@ public class IssueAssigneeService {
     private UserRepository userRepository;
     @Autowired
     private IssueRepository issueRepository;
-    @Autowired
-    private IssueAssigneeRepository issueAssigneeRepository;
 
     @Transactional
     public Set<IssueAssignee> assign(List<Long> userIds, Issue issue) {
@@ -46,31 +42,30 @@ public class IssueAssigneeService {
 
     @Transactional
     public Set<IssueAssignee> updateAssigneesForIssue(List<Long> userIds, Issue issue) {
-        // get existing assignees
-        var existingIssueAssigneeIds = userIds
+        Set<IssueAssignee> currentAssignees = issue.getAssignees();
+        Set<IssueAssignee> updatedAssignees = userRepository
+            .findAllById(userIds)
             .stream()
-            .filter(userId -> isUserAssignedTo(userId, issue))
-            .map(userId -> new IssueAssigneeId(issue.getId(), userId))
-            .collect(Collectors.toList());
-        var existingAssignees = issueAssigneeRepository.findAllById(existingIssueAssigneeIds);
-
-        // get new assignees
-        var newAssignees = userIds
-            .stream()
-            .filter(userId -> !isUserAssignedTo(userId, issue))
-            .map(userId -> new IssueAssignee(issue, userRepository.findById(userId).get()))
-            .collect(Collectors.toList());
-
-        var currentAssignees = issue.getAssignees();
-        currentAssignees.retainAll(existingAssignees);
-        currentAssignees.addAll(newAssignees);
-        issue.setAssignees(currentAssignees);
+            .map(user -> {
+                return currentAssignees
+                    .stream()
+                    .filter(assignee -> assignee.getUser().getId().equals(user.getId()))
+                    .findFirst()
+                    .orElseGet(() -> {
+                        IssueAssignee newAssignee = new IssueAssignee(issue, user);
+                        currentAssignees.add(newAssignee);
+                        return newAssignee;
+                    });
+            })
+            .collect(Collectors.toSet());
+        
+        currentAssignees.retainAll(updatedAssignees);
         return currentAssignees;
+
     }
 
-    public boolean isUserAssignedTo(Long userId, Issue issue) {
-        var currentAssigneeIds = issue
-                .getAssignees()
+    public boolean isUserAssignedTo(Long userId, Set<IssueAssignee> assignees) {
+        var currentAssigneeIds = assignees
                 .stream()
                 .map(assignee -> assignee.getUser().getId())
                 .collect(Collectors.toSet());
