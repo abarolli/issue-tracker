@@ -77,4 +77,9 @@ public class IssueService {
         issueRepository.save(issue);
         return IssueMapper.INSTANCE.issueToIssueDTO(issue);
     }
+
+    @Transactional
+    public void deleteIssue(Long id) {
+        issueRepository.deleteById(id);
+    }
 }

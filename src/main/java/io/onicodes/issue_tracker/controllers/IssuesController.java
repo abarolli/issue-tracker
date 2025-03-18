@@ -4,6 +4,7 @@ package io.onicodes.issue_tracker.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,6 +55,8 @@ public class IssuesController {
         return issueService.updateIssue(id, issueRequestDTO);
     }
 
-        return issueService.updateIssue(id, issueCreateRequestDTO);
+    @DeleteMapping("/{id}")
+    public void deleteIssue(@PathVariable Long id) {
+        issueService.deleteIssue(id);
     }
 }
