@@ -49,7 +49,10 @@ public class IssuesController {
     @PatchMapping("/{id}")
     public IssueResponseDTO updateIssue(
         @PathVariable Long id,
-        @RequestBody IssueRequestDTO issueCreateRequestDTO) { // TODO: implement validation for update requests
+        @RequestBody IssueRequestDTO issueRequestDTO) { // TODO: implement validation for update requests
+
+        return issueService.updateIssue(id, issueRequestDTO);
+    }
 
         return issueService.updateIssue(id, issueCreateRequestDTO);
     }

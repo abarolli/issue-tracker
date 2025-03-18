@@ -24,14 +24,14 @@ public interface IssueMapper {
     @Mapping(target = "assignees", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    Issue issueCreateRequestDTOToIssue(IssueRequestDTO issueDTO);
+    Issue issueRequestDTOToIssue(IssueRequestDTO issueDTO);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "assignees", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateFromDTO(IssueRequestDTO issueCreateRequestDTO, @MappingTarget Issue issue);
+    void updateFromDTO(IssueRequestDTO issueRequestDTO, @MappingTarget Issue issue);
 
     IssueResponseDTO issueToIssueDTO(Issue issue);
 

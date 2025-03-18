@@ -48,7 +48,7 @@ public class IssueService {
     @Transactional
     public IssueResponseDTO createIssue(IssueRequestDTO issueDTO) {
         Issue issue = issueRepository
-                        .save(IssueMapper.INSTANCE.issueCreateRequestDTOToIssue(issueDTO));
+                        .save(IssueMapper.INSTANCE.issueRequestDTOToIssue(issueDTO));
         List<Long> userIds = issueDTO
                                 .getAssignees()
                                 .stream()

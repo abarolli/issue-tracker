@@ -20,19 +20,19 @@ public class IssueParameterResolver implements ParameterResolver {
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-        var issueCreateRequestDTO = new IssueRequestDTO();
-        issueCreateRequestDTO.setTitle("test title");
-        issueCreateRequestDTO.setDescription("test desc");
-        issueCreateRequestDTO.setStatus("OPEN");
-        issueCreateRequestDTO.setPriority("CRITICAL");
+        var issueRequestDTO = new IssueRequestDTO();
+        issueRequestDTO.setTitle("test title");
+        issueRequestDTO.setDescription("test desc");
+        issueRequestDTO.setStatus("OPEN");
+        issueRequestDTO.setPriority("CRITICAL");
 
         var user = new UserDTO();
         user.setId(Long.valueOf(1));
         user.setName("Oni");
         user.setEmail("myemail@gmail.com");
         
-        issueCreateRequestDTO.setAssignees(List.of(user));
-        return issueCreateRequestDTO;
+        issueRequestDTO.setAssignees(List.of(user));
+        return issueRequestDTO;
     }
     
 }
