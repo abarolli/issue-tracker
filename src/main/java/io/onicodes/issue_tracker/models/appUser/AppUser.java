@@ -1,4 +1,4 @@
-package io.onicodes.issue_tracker.models;
+package io.onicodes.issue_tracker.models.appUser;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,6 +36,12 @@ public class AppUser {
 
     @Column(nullable = false)
     private String name;
+    
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @Column(nullable = false, unique = true)
     private String email;

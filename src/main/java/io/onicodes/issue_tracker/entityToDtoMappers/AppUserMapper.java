@@ -7,13 +7,14 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import io.onicodes.issue_tracker.dtos.AppUserDto;
-import io.onicodes.issue_tracker.models.AppUser;
+import io.onicodes.issue_tracker.models.appUser.AppUser;
 
 @Mapper
 public interface AppUserMapper {
     AppUserMapper INSTANCE = Mappers.getMapper(AppUserMapper.class);
 
     @Mapping(target = "issues", ignore = true)
+    @Mapping(target = "password", ignore = true)
     AppUser appUserDtoToAppUser(AppUserDto userDto);
 
     List<AppUser> appUserDtoListToAppUserList(List<AppUserDto> userDtos);
