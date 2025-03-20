@@ -14,5 +14,6 @@ import lombok.ToString;
 public class AppUserDto {
     private Long id;
     private String name;
+    private String username;
     private String email;
 }
