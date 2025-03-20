@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import io.onicodes.issue_tracker.dtos.issue.IssueRequestDto;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDto;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
-import io.onicodes.issue_tracker.models.AppUser;
+import io.onicodes.issue_tracker.models.appUser.AppUser;
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.models.issue.IssuePriority;
 import io.onicodes.issue_tracker.models.issue.IssueStatus;

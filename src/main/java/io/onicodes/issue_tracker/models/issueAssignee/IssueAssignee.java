@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import io.onicodes.issue_tracker.models.AppUser;
+import io.onicodes.issue_tracker.models.appUser.AppUser;
 import io.onicodes.issue_tracker.models.issue.Issue;
 
 
