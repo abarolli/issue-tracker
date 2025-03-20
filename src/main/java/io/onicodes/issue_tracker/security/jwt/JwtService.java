@@ -24,10 +24,11 @@ public class JwtService {
     }
     
     public String generateToken(String username) {
+        final int oneHour = 1000 * 60 * 60;
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .expiration(new Date(System.currentTimeMillis() + oneHour))
                 .signWith(key)
                 .compact();
     }
