@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import lombok.extern.slf4j.Slf4j;
 import io.onicodes.issue_tracker.dtos.issue.IssueRequestDto;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDto;
+import io.onicodes.issue_tracker.entityToDtoMappers.AppUserMapper;
 import io.onicodes.issue_tracker.entityToDtoMappers.IssueMapper;
 import io.onicodes.issue_tracker.models.appUser.AppUser;
 import io.onicodes.issue_tracker.models.issue.Issue;
@@ -77,7 +78,7 @@ public class IssueMapperTests {
         assert(issueDto.getUpdatedAt() == issue.getUpdatedAt());
         var users = issue.getAssignees()
                         .stream()
-                        .map(a -> IssueMapper.INSTANCE.userToUserDto(a.getUser()))
+                        .map(a -> AppUserMapper.INSTANCE.appUserToAppUserDto(a.getUser()))
                         .collect(Collectors.toList());
         assert(issueDto.getAssignees().equals(users));        
     }
