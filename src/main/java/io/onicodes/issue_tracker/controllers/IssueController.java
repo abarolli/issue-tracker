@@ -23,7 +23,7 @@ import io.onicodes.issue_tracker.services.IssueService;
 
 @RestController
 @RequestMapping("/issues")
-public class IssuesController {
+public class IssueController {
 
     @Autowired
     private IssueService issueService;
