@@ -12,7 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
-public class IssueResponseDTO extends IssueBaseDTO {
+public class IssueResponseDto extends IssueBaseDto {
     private Long id;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

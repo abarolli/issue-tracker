@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import io.onicodes.issue_tracker.models.issue.Issue;
 import io.onicodes.issue_tracker.models.issueAssignee.IssueAssignee;
 import io.onicodes.issue_tracker.repositories.IssueRepository;
-import io.onicodes.issue_tracker.repositories.UserRepository;
+import io.onicodes.issue_tracker.repositories.AppUserRepository;
 
 @Slf4j
 @AllArgsConstructor
@@ -22,7 +22,7 @@ import io.onicodes.issue_tracker.repositories.UserRepository;
 public class IssueAssigneeService {
     
     @Autowired
-    private UserRepository userRepository;
+    private AppUserRepository userRepository;
     @Autowired
     private IssueRepository issueRepository;
 
