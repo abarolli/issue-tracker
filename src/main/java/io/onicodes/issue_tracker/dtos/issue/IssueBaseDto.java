@@ -1,6 +1,5 @@
 package io.onicodes.issue_tracker.dtos.issue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -33,5 +32,5 @@ public class IssueBaseDto {
     @NotNull(groups = CreateGroup.class)
     private String priority;
 
-    private List<AppUserDto> assignees = new ArrayList<>();
+    private List<AppUserDto> assignees;
 }

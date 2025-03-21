@@ -65,14 +65,15 @@ public class IssueService {
                                     .orElseThrow(() -> new IssueNotFoundException(id));
         
         IssueMapper.INSTANCE.updateFromDto(issueDto, issue);
+        var assignees = issueDto.getAssignees();
+        if (assignees != null) {
+            List<Long> userIds = assignees
+                .stream()
+                .map(userDto -> userDto.getId())
+                .collect(Collectors.toList());
 
-        List<Long> userIds = issueDto
-                                .getAssignees()
-                                .stream()
-                                .map(userDto -> userDto.getId())
-                                .collect(Collectors.toList());
-        
-        issueAssigneeService.updateAssigneesForIssue(userIds, issue);
+            issueAssigneeService.updateAssigneesForIssue(userIds, issue);
+        }
         issue.setUpdatedAt(LocalDateTime.now());
         issueRepository.save(issue);
         return IssueMapper.INSTANCE.issueToIssueDto(issue);
