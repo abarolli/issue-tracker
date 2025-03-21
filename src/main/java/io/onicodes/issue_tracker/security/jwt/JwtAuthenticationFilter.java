@@ -2,6 +2,7 @@ package io.onicodes.issue_tracker.security.jwt;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,13 +35,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String token = authHeader.substring(7);
         try {
             String username = jwtService.extractUsername(token);
+            List<String> roles = jwtService.extractRoles(token);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                var grantedRoles = roles
+                    .stream()
+                    .map(role -> new SimpleGrantedAuthority(role))
+                    .collect(Collectors.toSet());
+                    
                 UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(
-                        new User(username, "", List.of(new SimpleGrantedAuthority("USER"))),
+                        new User(username, "", grantedRoles),
                         null,
-                        List.of(new SimpleGrantedAuthority("USER"))
+                        grantedRoles
                     );
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
