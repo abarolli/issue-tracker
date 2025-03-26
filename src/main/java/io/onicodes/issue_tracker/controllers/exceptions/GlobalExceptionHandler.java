@@ -19,6 +19,14 @@ public class GlobalExceptionHandler {
         errorRes.put("message", e.getMessage());
         return new ResponseEntity<>(errorRes, HttpStatus.NOT_FOUND);
     }
+    
+    @ExceptionHandler(AppUserNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleAppUserNotFound(AppUserNotFoundException e) {
+        Map<String, String> errorRes= new HashMap<>();
+        errorRes.put("error", "Not found");
+        errorRes.put("message", e.getMessage());
+        return new ResponseEntity<>(errorRes, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleBadRequest(MethodArgumentNotValidException e) {
