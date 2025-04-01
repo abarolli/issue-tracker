@@ -92,7 +92,7 @@ public class IssueServiceTests {
         when(issueRepository.findAll(any(Pageable.class)))
             .thenReturn(new PageImpl<>(List.of(dummySavedIssueWithAssigneesFrom(issueRequestDto))));
 
-        List<IssueResponseDto> issues = issueService.getIssues(0, 10).getContent();
+        List<IssueResponseDto> issues = issueService.getIssues(0, 10, "id", "asc").getContent();
         for (var issueResponseDto : issues) {
             assertValidResponseDto(issueResponseDto, issueRequestDto);
         }
