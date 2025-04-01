@@ -31,6 +31,7 @@ public class AppUserService {
     }
 
     public Page<AppUserDto> getUsers(int page, int size) {
+        page = Math.max(0, page - 1);
         Pageable pageable = PageRequest.of(page, size);
         return userRepository
                 .findAll(pageable)

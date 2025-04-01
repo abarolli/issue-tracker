@@ -39,6 +39,7 @@ public class IssueService {
     }
 
     public Page<IssueResponseDto> getIssues(int page, int size) {
+        page = Math.max(0, page - 1);
         Pageable pageable = PageRequest.of(page, size);
         return issueRepository
                 .findAll(pageable)
