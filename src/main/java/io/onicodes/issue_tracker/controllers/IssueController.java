@@ -29,7 +29,7 @@ public class IssueController {
     private IssueService issueService;
 
     @GetMapping
-    public Page<IssueResponseDto> getIssues(@RequestParam(defaultValue = "0") int page,
+    public Page<IssueResponseDto> getIssues(@RequestParam(defaultValue = "1") int page,
                                     @RequestParam(defaultValue = "10") int size) {
 
         return issueService.getIssues(page, size);

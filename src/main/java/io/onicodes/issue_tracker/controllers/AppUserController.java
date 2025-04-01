@@ -19,7 +19,7 @@ public class AppUserController {
     private AppUserService userService;
 
     @GetMapping
-    public Page<AppUserDto> getUsers(@RequestParam(defaultValue = "0") int page,
+    public Page<AppUserDto> getUsers(@RequestParam(defaultValue = "1") int page,
                                     @RequestParam(defaultValue = "10") int size) {
         
         return userService.getUsers(page, size);
