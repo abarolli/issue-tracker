@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import io.onicodes.issue_tracker.repositories.IssueRepository;
 
 @AllArgsConstructor
 @Service
+@Slf4j
 public class IssueService {
     
     @Autowired
@@ -38,8 +41,10 @@ public class IssueService {
                 .orElseThrow(() -> new IssueNotFoundException(id));
     }
 
-    public Page<IssueResponseDto> getIssues(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<IssueResponseDto> getIssues(int page, int size, String sortBy, String order) {
+        page = Math.max(0, page - 1);
+        Sort sort = (order.equals("desc")) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
         return issueRepository
                 .findAll(pageable)
                 .map(issue -> IssueMapper.INSTANCE.issueToIssueDto(issue));

@@ -1,5 +1,6 @@
 package io.onicodes.issue_tracker.security.jwt;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,8 @@ public class JwtService {
 
     @PostConstruct // needed because SECRET_KEY is injected after field initialization
     public void init() {
-        key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        var bytes = Base64.getDecoder().decode(SECRET_KEY);
+        key = Keys.hmacShaKeyFor(bytes);
     }
     
     public String generateToken(String username) {

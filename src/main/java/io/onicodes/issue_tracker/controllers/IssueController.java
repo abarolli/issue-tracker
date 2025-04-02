@@ -19,20 +19,26 @@ import io.onicodes.issue_tracker.dtos.PatchGroup;
 import io.onicodes.issue_tracker.dtos.issue.IssueRequestDto;
 import io.onicodes.issue_tracker.dtos.issue.IssueResponseDto;
 import io.onicodes.issue_tracker.services.IssueService;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 
 @RestController
 @RequestMapping("/issues")
+@Slf4j
 public class IssueController {
 
     @Autowired
     private IssueService issueService;
 
     @GetMapping
-    public Page<IssueResponseDto> getIssues(@RequestParam(defaultValue = "0") int page,
-                                    @RequestParam(defaultValue = "10") int size) {
+    public Page<IssueResponseDto> getIssues(@RequestParam(defaultValue = "1") int page,
+                                    @RequestParam(defaultValue = "10") int size,
+                                    @RequestParam(name="sortBy", defaultValue = "title") String sortBy,
+                                    @RequestParam(name="order", defaultValue = "asc") String order,
+                                    HttpServletRequest request) {
 
-        return issueService.getIssues(page, size);
+        return issueService.getIssues(page, size, sortBy, order);
     }
 
     @GetMapping("/{id}")
